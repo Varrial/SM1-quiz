@@ -18,6 +18,7 @@
         android:text="@string/header"
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textColor="#FFFFFF"
         app:autoSizeTextType="uniform" />
 
     <LinearLayout
@@ -30,8 +31,12 @@
             android:id="@+id/question_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:autoText="false"
             android:padding="30dp"
-            android:text="@string/q_platki" />
+            android:text="@string/q_platki"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:autoSizeTextType="none" />
 
         <LinearLayout
             android:layout_width="wrap_content"
