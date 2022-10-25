@@ -17,32 +17,68 @@ import com.example.sm1_quiz.databinding.ActivityMainBinding;
 
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
-
-    private AppBarConfiguration appBarConfiguration;
     private ActivityMainBinding binding;
+
+    private Button trueButton;
+    private Button falseButton;
+    private Button nextButton;
+    private TextView questionTextView;
+
+    private Question[] questions = new Question[] {
+            new Question(R.string.q_platki, true),
+            new Question(R.string.q_wojna, false),
+            new Question(R.string.q_pierogi, false),
+            new Question(R.string.q_wyspy, true),
+            new Question(R.string.q_troja, false),
+    };
+
+    private int currentIndex = 0;
+
+//    @Override
+//    public void setContentView(View view) {
+//        super.setContentView(R.layout.activity_main);
+//    }
+//    Chyba nie potrzebne dopisane przeze mnie
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
+        setContentView(binding.getRoot());;
 
-        setSupportActionBar(binding.toolbar);
+        trueButton = findViewById(R.id.true_button);
+        falseButton = findViewById(R.id.false_button);
+        nextButton = findViewById(R.id.next_button);
+        questionTextView = findViewById(R.id.question_text_view);
 
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
-        appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
-        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
-
-        binding.fab.setOnClickListener(new View.OnClickListener() {
+        trueButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+            public void onClick(View v) {
+                checkAnswerCorrectness(true);
             }
         });
+
+        falseButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                checkAnswerCorrectness(false);
+            }
+        });
+
+        nextButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                currentIndex = (currentIndex + 1) % questions.length;
+                setNextQuestion();
+            }
+        });
+        setNextQuestion();
     }
 
     @Override
@@ -67,10 +103,18 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public boolean onSupportNavigateUp() {
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
-        return NavigationUI.navigateUp(navController, appBarConfiguration)
-                || super.onSupportNavigateUp();
+    private void checkAnswerCorrectness(boolean userAnswer) {
+        boolean correctAnswer = questions[currentIndex].isTrueAnswer();
+        int resultMessageId = 0;
+        if (userAnswer == correctAnswer) {
+            resultMessageId = R.string.correct_answer;
+        } else {
+            resultMessageId = R.string.incorrect_answer;
+        }
+        Toast.makeText(this, resultMessageId, Toast.LENGTH_SHORT).show();
+    }
+
+    private void setNextQuestion() {
+        questionTextView.setText(questions[currentIndex].getQuestionId());
     }
 }
