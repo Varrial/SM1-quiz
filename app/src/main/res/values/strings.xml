@@ -8,7 +8,9 @@
     <string name="button_true">Prawda</string>
     <string name="button_false">Fałsz</string>
     <string name="button_next">Następne</string>
-    
+    <string name="button_hint">Podpowiedź</string>
+    <string name="button_show_hint">Pokaż odpowiedź</string>
+
     <string name="q_platki">Najpierw mleko potem płatki</string> <!-- tak -->
     <string name="q_wojna">Wojna Stuletnia trwała 100lat</string> <!-- 116 -->
     <string name="q_pierogi">Pierogi ruskie to potrawa pochodzenia rosyjskiego</string> <!-- Białoruś -->
@@ -17,4 +19,7 @@
 
     <string name="correct_answer">Dobrze!</string>
     <string name="incorrect_answer">Źle</string>
+    <string name="answer_was_shown">Odpowiedź została wyświetlona</string>
+
+    <string name="help_check">Czy na pewno chcesz zobaczyć odpowiedź?</string>
 </resources>
