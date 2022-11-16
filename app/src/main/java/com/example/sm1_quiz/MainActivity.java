@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -50,20 +51,33 @@ public class MainActivity extends AppCompatActivity {
     public static final String KEY_EXTRA_ANSWER = "com.example.sm1_quiz.correctAnswer";
 
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//
+//        if (resultCode != RESULT_OK) {
+//            return;
+//        }
+//        if (requestCode == REQUEST_CODE_PROMPT) {
+//            if (data == null) {
+//                return;
+//            }
+//            answerWasShown = data.getBooleanExtra(PromptActivity.KEY_EXTRA_ANSWER_SHOWN, false);
+//        }
+//    }
 
-        if (resultCode != RESULT_OK) {
-            return;
-        }
-        if (requestCode == REQUEST_CODE_PROMPT) {
-            if (data == null) {
-                return;
-            }
-            answerWasShown = data.getBooleanExtra(PromptActivity.KEY_EXTRA_ANSWER_SHOWN, false);
-        }
-    }
+    ActivityResultLauncher<Intent> someActivityResultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        // There are no request codes
+                        Intent data = result.getData();
+                        doSomeOperations();
+                    }
+                }
+            });
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -115,7 +129,7 @@ public class MainActivity extends AppCompatActivity {
                 boolean correctAnswer = questions[currentIndex].isTrueAnswer();
                 intent.putExtra(KEY_EXTRA_ANSWER, correctAnswer);
 
-                startActivityForResult(intent, REQUEST_CODE_PROMPT);
+//                startActivityForResult(intent, REQUEST_CODE_PROMPT);
 
                 startActivity(intent);
             }
