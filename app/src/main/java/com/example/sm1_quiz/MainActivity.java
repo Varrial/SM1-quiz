@@ -1,9 +1,12 @@
 package com.example.sm1_quiz;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
@@ -71,11 +74,14 @@ public class MainActivity extends AppCompatActivity {
             new ActivityResultCallback<ActivityResult>() {
                 @Override
                 public void onActivityResult(ActivityResult result) {
-                    if (result.getResultCode() == Activity.RESULT_OK) {
-                        // There are no request codes
-                        Intent data = result.getData();
-                        doSomeOperations();
+                    if (result.getResultCode() != Activity.RESULT_OK) {
+                        return;
                     }
+                    Intent data = result.getData();
+                    if (data == null) {
+                        return;
+                    }
+                    answerWasShown = data.getBooleanExtra(PromptActivity.KEY_EXTRA_ANSWER_SHOWN, false);
                 }
             });
 
@@ -129,9 +135,10 @@ public class MainActivity extends AppCompatActivity {
                 boolean correctAnswer = questions[currentIndex].isTrueAnswer();
                 intent.putExtra(KEY_EXTRA_ANSWER, correctAnswer);
 
+                someActivityResultLauncher.launch(intent);
 //                startActivityForResult(intent, REQUEST_CODE_PROMPT);
 
-                startActivity(intent);
+//                startActivity(intent);
             }
         });
 
